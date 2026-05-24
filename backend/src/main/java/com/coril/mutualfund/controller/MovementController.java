@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/investors")
+@CrossOrigin(origins = "http://localhost:5173")
 public class MovementController {
 
     private final MovementService movementService;
