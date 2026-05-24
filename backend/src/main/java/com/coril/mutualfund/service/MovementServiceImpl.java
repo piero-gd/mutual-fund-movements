@@ -1,8 +1,10 @@
 package com.coril.mutualfund.service;
 
+import com.coril.mutualfund.domain.Movement;
 import com.coril.mutualfund.dto.MovementResponse;
 import com.coril.mutualfund.persistence.MovementRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,8 +18,22 @@ public class MovementServiceImpl implements MovementService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MovementResponse> getMovementsByInvestorId(String investorId) {
-        // TODO: implementar lógica de negocio
-        return List.of();
+        return movementRepository.findByInvestorIdOrderByDateDesc(investorId)
+                .stream()
+                .map(MovementServiceImpl::toResponse)
+                .toList();
+    }
+
+    private static MovementResponse toResponse(Movement movement) {
+        return new MovementResponse(
+                movement.getId(),
+                movement.getFundName(),
+                movement.getOperationType(),
+                movement.getStatus(),
+                movement.getAmount(),
+                movement.getDate()
+        );
     }
 }
