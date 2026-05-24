@@ -1,111 +1,176 @@
+/* --- Design tokens ------------------------------------------ */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --color-bg:              #f4f6f9;
+  --color-surface:         #ffffff;
+  --color-border:          #e2e8f0;
+  --color-text:            #334155;
+  --color-text-muted:      #64748b;
+  --color-text-heading:    #0f172a;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Status */
+  --color-completed:       #16a34a;
+  --color-completed-bg:    #dcfce7;
+  --color-pending:         #d97706;
+  --color-pending-bg:      #fef9c3;
+  --color-rejected:        #dc2626;
+  --color-rejected-bg:     #fee2e2;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Operation type */
+  --color-subscription:    #2563eb;
+  --color-subscription-bg: #dbeafe;
+  --color-redemption:      #7c3aed;
+  --color-redemption-bg:   #ede9fe;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --radius-lg: 12px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.05);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
+/* --- Reset --------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  margin: 0;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
+#root { min-height: 100svh; }
+
+/* --- Page layout --------------------------------------------- */
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+.page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.page__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-heading);
+  letter-spacing: -0.3px;
+}
+
+.page__subtitle {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.page__count {
+  flex-shrink: 0;
+  align-self: center;
+  font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--text-h);
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+/* --- Feedback states ----------------------------------------- */
+.feedback-state {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1rem;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
+.feedback-state__text {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+.feedback-state--error .feedback-state__text {
+  color: var(--color-rejected);
+}
+
+/* --- Movement list ------------------------------------------- */
+.movement-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+/* --- Movement card ------------------------------------------- */
+.movement-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.movement-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.movement-card__fund {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--color-text-heading);
+}
+
+.movement-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.movement-card__amount {
+  margin-left: auto;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-text-heading);
+}
+
+.movement-card__date {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+/* --- Badges -------------------------------------------------- */
+.badge {
   display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
-}
+/* Status */
+.status--completed { color: var(--color-completed); background: var(--color-completed-bg); }
+.status--pending   { color: var(--color-pending);   background: var(--color-pending-bg); }
+.status--rejected  { color: var(--color-rejected);  background: var(--color-rejected-bg); }
+
+/* Operation type */
+.type--subscription { color: var(--color-subscription); background: var(--color-subscription-bg); }
+.type--redemption   { color: var(--color-redemption);   background: var(--color-redemption-bg); }
