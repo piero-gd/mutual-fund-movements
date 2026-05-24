@@ -14,7 +14,7 @@ interface MovementCardProps {
 
 export function MovementCard({ movement }: MovementCardProps) {
   return (
-    <article className="movement-card">
+    <article className={`movement-card movement-card--${movement.status.toLowerCase()}`}>
       <div className="movement-card__header">
         <span className="movement-card__fund">{movement.fundName}</span>
         <span className="movement-card__amount">{formatAmount(movement.amount)}</span>
