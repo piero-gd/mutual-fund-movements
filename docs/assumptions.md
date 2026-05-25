@@ -40,4 +40,4 @@ Este documento registra las decisiones tomadas ante información incompleta en e
    Para el MVP se usa un `investorId` fijo (`"INV-001"`) para demostración, hardcodeado en la página principal.
 
 2. **Conexión con el backend**  
-   El frontend se conecta al backend real. Si el backend no está disponible, se documentará como pendiente y se usarán datos simulados como fallback temporal.
+   El frontend se conecta al backend real en `http://localhost:8080`. La URL base está hardcodeada en `movementsApi.ts` — en un entorno real se configuraría mediante variable de entorno (`VITE_API_URL`). Si el backend no está disponible, el frontend muestra un banner de error con botón de reintento.

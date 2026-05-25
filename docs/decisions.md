@@ -57,6 +57,7 @@ La API retorna DTOs, no entidades JPA directamente. Esto evita exponer la estruc
 | `hooks/` | Lógica de carga/estado de datos desacoplada de la UI |
 | `components/` | Componentes visuales reutilizables, sin lógica de negocio |
 | `pages/` | Pantallas completas que componen componentes y consumen hooks |
+| `utils/` | Funciones puras de presentación (formateo, labels, clases CSS) desacopladas de la UI |
 
 **Por qué**: Sigue el principio de separación de responsabilidades. Permite testear la lógica (hooks) sin renderizar UI y testear la UI sin depender de la API.
 
