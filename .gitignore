@@ -5,6 +5,7 @@ target/
 *.war
 *.ear
 .mvn/
+!backend/.mvn/wrapper/maven-wrapper.properties
 !**/src/main/**/target/
 !**/src/test/**/target/
 
