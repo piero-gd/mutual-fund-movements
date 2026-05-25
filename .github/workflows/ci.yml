@@ -24,7 +24,7 @@ jobs:
         run: cd backend && ./mvnw --no-transfer-progress test
 
   frontend:
-    name: Frontend — build
+    name: Frontend — build & test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
