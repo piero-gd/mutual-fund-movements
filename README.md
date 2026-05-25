@@ -142,7 +142,7 @@ mutual-fund-movements/
 | Autenticación | Fuera del scope del MVP | Spring Security + JWT en el backend; `httpOnly` cookie o header `Authorization` en el frontend |
 | Paginación | No implementada | `Pageable` en el repositorio JPA; query params `?page=0&size=20`; componente de paginación o "cargar más" en el frontend |
 | `investorId` dinámico | Hardcodeado en `MovementsPage` | Con auth: extraído del token. Sin auth: parámetro de URL (`/investors/:id`) o input de búsqueda |
-| Tests de frontend | Sin cobertura | Vitest + React Testing Library; prioridad: `useMovements` con `fetch` mockeado, `MovementCard` con distintos estados |
-| CI/CD | No implementado | GitHub Actions: `mvn test` en backend y `npm run build` en frontend, disparado en push/PR a `main` |
+| Tests de frontend | Implementado — Vitest + RTL, 18 tests en 3 archivos (`movementFormatters`, `MovementCard`, `useMovements`) | — |
+| CI/CD | Implementado — GitHub Actions con jobs paralelos: `mvn test` (backend) y `npm test` + `npm run build` (frontend), disparado en push/PR a `main` | — |
 | Base de datos persistente | H2 en memoria | Cambiar datasource a PostgreSQL + Flyway para migraciones; la lógica de negocio no cambia |
 | Errores detallados en frontend | Mensaje genérico | Distinguir `NetworkError` (backend caído), `404` (inversor sin movimientos) y `5xx` con mensajes específicos por caso |

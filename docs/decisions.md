@@ -60,6 +60,12 @@ La API retorna DTOs, no entidades JPA directamente. Esto evita exponer la estruc
 
 **Por qué**: Sigue el principio de separación de responsabilidades. Permite testear la lógica (hooks) sin renderizar UI y testear la UI sin depender de la API.
 
+### Testing: Vitest + React Testing Library
+
+Elegido sobre Jest por ser el par natural de Vite: reutiliza la misma configuración de build, sin boilerplate adicional de Babel o `ts-jest`. La API es compatible con Jest, por lo que el conocimiento es transferible. React Testing Library complementa Vitest para testear componentes desde la perspectiva del usuario (texto visible, roles), no de detalles de implementación.
+
+Cobertura implementada: funciones puras (`movementFormatters`), componente con variantes de estado (`MovementCard`) y hook asíncrono con fetch mockeado (`useMovements`).
+
 ---
 
 ## Repositorio
@@ -67,3 +73,9 @@ La API retorna DTOs, no entidades JPA directamente. Esto evita exponer la estruc
 ### Conventional Commits
 
 Commits pequeños y semánticamente descriptivos (`feat:`, `fix:`, `test:`, `ci:`). Facilita el tracking de cambios, la generación de changelogs y la revisión de PR.
+
+### CI/CD: GitHub Actions con jobs paralelos
+
+Dos jobs independientes (`backend` y `frontend`) que corren en paralelo sobre `ubuntu-latest`. El job de backend ejecuta `./mvnw test`; el de frontend ejecuta `npm test` seguido de `npm run build`. Disparado en push y pull_request a `main`.
+
+**Por qué paralelos y no un solo job secuencial**: si un job falla, el otro sigue corriendo y se puede ver exactamente qué parte rompió. Con un job secuencial, un fallo de backend impediría saber si el frontend también tenía errores.

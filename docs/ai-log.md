@@ -35,6 +35,44 @@ Regla principal: si la IA propone algo que no entiendo completamente, no lo acep
 
 ---
 
+## Sesión: 2026-05-25
+
+### Tareas delegadas a la IA
+
+| # | Prompt / tarea | Resultado |
+|---|---|---|
+| 1 | Validación final contra el enunciado original | Aceptado — identificó CI/CD y tests de frontend como únicos ítems pendientes |
+| 2 | Proponer opciones de workflow CI/CD en GitHub Actions | Aceptado — Opción B (jobs paralelos) elegida |
+| 3 | Implementar `.github/workflows/ci.yml` | Aceptado con corrección previa: se detectó que `mvnw` tenía modo `100644` en git y se corrigió a `100755` antes de crear el workflow |
+| 4 | Diagnosticar error de CI: `App.css` con carácter no-UTF8 (`0x97`) | Diagnosticado correctamente — em-dash en Windows-1252; usuario resolvió directamente |
+| 5 | Diagnosticar error de CI: `maven-wrapper.properties: No such file` | Diagnosticado — `.mvn/` estaba en `.gitignore`; resuelto con excepción `!backend/.mvn/wrapper/maven-wrapper.properties` |
+| 6 | Proponer herramienta y conjunto mínimo de tests de frontend | Aceptado — Vitest + RTL, 3 archivos, 18 tests |
+| 7 | Implementar tests de frontend | Aceptado con corrección: assertion `/5/` en `MovementCard.test.tsx` colisionaba con la fecha; corregido a `/S\/\s*5[.,]000/` |
+| 8 | Diagnosticar error de CI: `'test' does not exist in type 'UserConfigExport'` | Diagnosticado — `defineConfig` importado desde `'vite'` no incluye tipos de Vitest; corregido a `vitest/config` |
+
+### Decisiones aceptadas
+
+- **Jobs paralelos en CI**: dos jobs independientes (`backend` / `frontend`) sobre `ubuntu-latest`. Aceptado porque un fallo en uno no oculta el estado del otro.
+- **`--no-transfer-progress` en Maven CI**: evita miles de líneas de logs de descarga. Aceptado.
+- **Cache de Maven y npm en CI**: `actions/setup-java` con `cache: maven` y `actions/setup-node` con `cache: npm`. Aceptado por acelerar builds subsiguientes.
+- **`npm ci` en lugar de `npm install` en CI**: reproducible y falla si hay discrepancias con `package-lock.json`. Aceptado como estándar correcto para CI.
+- **`import { defineConfig } from 'vitest/config'`**: Opción A recomendada por ser el patrón oficial de Vitest. Aceptado.
+
+### Decisiones rechazadas o corregidas
+
+- **Job único secuencial (Opción A de CI)**: descartado porque oculta fallos — si el backend falla, el frontend nunca se evalúa.
+- **`mvn` directo en CI sin wrapper**: descartado por inconsistencia con el README que usa `mvnw`, y porque la versión de Maven del runner podría no coincidir.
+- **Assertion `/5/` en test de monto**: la IA propuso esa regex que colisionó con la fecha formateada. Corregida a `/S\/\s*5[.,]000/` para apuntar al monto específico.
+
+### Lo que validé manualmente
+
+- [x] Ejecuté `npm test` localmente tras cada cambio — 18/18 tests pasando
+- [x] Ejecuté `npm run build` localmente tras cambiar `vite.config.ts` — build limpio sin errores de tipos
+- [x] Verifiqué en GitHub Actions que el workflow se ejecutó correctamente en ambos jobs tras los fixes
+- [x] Revisé el contenido de `maven-wrapper.properties` antes de forzar su tracking con `git add -f`
+
+---
+
 ### Decisiones aceptadas
 
 - **Arquitectura por capas** (controller → service → repository): propuesta por la IA, aceptada porque es el estándar de facto en Spring Boot y facilita el testing por capa de forma independiente.
